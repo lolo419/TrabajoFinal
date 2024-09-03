@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Modificar Perfil{% endblock %}
+
+{% block content %}
+<h2>Modificar Perfil de {{ user.username }}</h2>
+
+<!-- Formulario para actualizar el perfil -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- Nombre de usuario -->
+    <div class="form-group">
+        <label for="username">Nombre de Usuario</label>
+        {{ user_form.username.label_tag }}
+        {{ user_form.username }}
+        {% if user_form.username.errors %}
+            <div class="text-danger">{{ user_form.username.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+        <label for="email">Email</label>
+        {{ user_form.email.label_tag }}
+        {{ user_form.email }}
+        {% if user_form.email.errors %}
+            <div class="text-danger">{{ user_form.email.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Imagen del perfil -->
+    <div class="form-group">
+        <label for="image">Imagen del Perfil</label>
+        {% if user.profile.image %}
+            <img src="{{ user.profile.image.url }}" alt="Imagen de perfil" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+        {% else %}
+            <p>No tienes una imagen de perfil cargada.</p>
+        {% endif %}
+        {{ profile_form.image.label_tag }}
+        {{ profile_form.image }}
+        {% if profile_form.image.errors %}
+            <div class="text-danger">{{ profile_form.image.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-group">
+        <label for="description">Descripción</label>
+        {{ profile_form.description.label_tag }}
+        {{ profile_form.description }}
+        {% if profile_form.description.errors %}
+            <div class="text-danger">{{ profile_form.description.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Página web -->
+    <div class="form-group">
+        <label for="website">Página Web</label>
+        {{ profile_form.website.label_tag }}
+        {{ profile_form.website }}
+        {% if profile_form.website.errors %}
+            <div class="text-danger">{{ profile_form.website.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Botón para guardar cambios del perfil -->
+    <button type="submit" name="update_profile" class="btn btn-primary">Guardar cambios</button>
+</form>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <a href="{% url 'change_password' %}" class="btn btn-primary mt-3">Cambiar Contraseña</a>
+</form>
+
+<!-- Enlace para volver al perfil -->
+<a href="{% url 'profile' %}" class="btn btn-secondary mt-3">Volver al Perfil</a>
+{% endblock %}

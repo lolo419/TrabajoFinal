@@ -1,0 +1,33 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Perfil{% endblock %}
+
+{% block content %}
+<h2>Perfil de {{ user.username }}</h2>
+
+{% if user.profile.image %}
+    <img src="{{ user.profile.image.url }}" alt="Imagen de perfil" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+{% else %}
+    <p>No tienes una imagen de perfil cargada.</p>
+{% endif %}
+
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Descripción:</strong> {{ user.profile.description }}</p>
+<p><strong>Website:</strong> <a href="{{ user.profile.website }}">{{ user.profile.website }}</a></p>
+
+<form method="post" action="{% url 'update_profile' %}">
+    {% csrf_token %}
+    <button type="submit" name="edit_profile" class="btn btn-primary">Editar Perfil</button>
+</form>
+
+<form method="post" action="{% url 'change_password' %}">
+    {% csrf_token %}
+    <button type="submit" name="change_password" class="btn btn-secondary">Cambiar Contraseña</button>
+</form>
+
+<form method="post" action="{% url 'delete_profile' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger mt-3">Eliminar Perfil</button>
+</form>
+{% endblock %}
